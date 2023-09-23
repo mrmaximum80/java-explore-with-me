@@ -1,9 +1,9 @@
-package ewm_stat_service;
+package ewmstatservice;
 
 import dto.EndpointHitDto;
 import dto.ViewStats;
-import ewm_stat_service.model.EndpointHit;
-import ewm_stat_service.service.StatService;
+import ewmstatservice.model.EndpointHit;
+import ewmstatservice.service.StatService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

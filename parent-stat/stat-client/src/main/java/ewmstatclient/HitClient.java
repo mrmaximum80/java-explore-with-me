@@ -1,7 +1,7 @@
-package ewm_stat_client;
+package ewmstatclient;
 
 import dto.EndpointHitDto;
-import ewm_stat_client.client.BaseClient;
+import ewmstatclient.client.BaseClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;

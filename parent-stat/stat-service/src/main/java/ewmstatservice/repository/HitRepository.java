@@ -1,7 +1,7 @@
-package ewm_stat_service.repository;
+package ewmstatservice.repository;
 
 import dto.ViewStats;
-import ewm_stat_service.model.EndpointHit;
+import ewmstatservice.model.EndpointHit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

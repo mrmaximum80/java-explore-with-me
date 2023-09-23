@@ -1,8 +1,8 @@
-package ewm_stat_service.service;
+package ewmstatservice.service;
 
 import dto.EndpointHitDto;
 import dto.ViewStats;
-import ewm_stat_service.model.EndpointHit;
+import ewmstatservice.model.EndpointHit;
 
 import java.time.LocalDateTime;
 import java.util.List;

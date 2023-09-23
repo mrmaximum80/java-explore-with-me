@@ -1,9 +1,9 @@
-package ewm_stat_service.controller;
+package ewmstatservice.controller;
 
 import dto.EndpointHitDto;
 import dto.ViewStats;
-import ewm_stat_service.model.EndpointHit;
-import ewm_stat_service.service.StatService;
+import ewmstatservice.model.EndpointHit;
+import ewmstatservice.service.StatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;

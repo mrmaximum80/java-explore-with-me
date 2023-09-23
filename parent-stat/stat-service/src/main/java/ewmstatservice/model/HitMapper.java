@@ -1,4 +1,4 @@
-package ewm_stat_service.model;
+package ewmstatservice.model;
 
 import dto.EndpointHitDto;
 import lombok.experimental.UtilityClass;

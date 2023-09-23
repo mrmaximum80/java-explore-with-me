@@ -1,10 +1,10 @@
-package ewm_stat_service.service;
+package ewmstatservice.service;
 
 import dto.EndpointHitDto;
 import dto.ViewStats;
-import ewm_stat_service.model.EndpointHit;
-import ewm_stat_service.model.HitMapper;
-import ewm_stat_service.repository.HitRepository;
+import ewmstatservice.model.EndpointHit;
+import ewmstatservice.model.HitMapper;
+import ewmstatservice.repository.HitRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

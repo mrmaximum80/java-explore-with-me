@@ -1,4 +1,4 @@
-package ewm_stat_client.client;
+package ewmstatclient.client;
 
 import org.springframework.http.*;
 import org.springframework.lang.Nullable;

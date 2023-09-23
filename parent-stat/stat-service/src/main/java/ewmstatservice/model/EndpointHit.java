@@ -1,4 +1,4 @@
-package ewm_stat_service.model;
+package ewmstatservice.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
