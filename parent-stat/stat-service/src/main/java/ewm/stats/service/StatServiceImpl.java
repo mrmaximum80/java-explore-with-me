@@ -42,9 +42,11 @@ public class StatServiceImpl implements StatService {
         } else {
             if (unique) {
                 log.info("Get unique stats of start={}, end={}, uri={}", start, end, uris);
+                List<ViewStats> viewStats = hitRepository.getViewStatsUnique(start, end, uris);
                 return hitRepository.getViewStatsUnique(start, end, uris);
             } else {
                 log.info("Get stats of start={}, end={}, uri={}", start, end, uris);
+                List<ViewStats> viewStats = hitRepository.getViewStatsUnique(start, end, uris);
                 return hitRepository.getViewStats(start, end, uris);
             }
         }

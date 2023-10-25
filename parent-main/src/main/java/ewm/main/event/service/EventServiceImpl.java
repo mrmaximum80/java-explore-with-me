@@ -30,14 +30,16 @@ import ewm.stats.client.HitClient;
 import ewm.stats.client.StatsClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -86,10 +88,10 @@ public class EventServiceImpl implements EventService {
         }
         events = events.subList(start, end);
         List<String> uris = events.stream().map(event -> "events/" + event.getId()).collect(Collectors.toList());
-        ResponseEntity<Object> viewStats = statsClient
+
+        List<ViewStats> views = statsClient
                 .getStats(LocalDateTime.of(1000, 01, 01, 00, 0, 0),
                         LocalDateTime.of(3050, 01, 01, 00, 0, 0), uris, true);
-        List<ViewStats> views = (List<ViewStats>) viewStats.getBody();
 
         List<EventShortDto> eventShortDtos = events.stream().map(EventMapper::toEventShortDto)
                 .collect(Collectors.toList());
@@ -252,23 +254,23 @@ public class EventServiceImpl implements EventService {
 
         List<String> uris = new ArrayList<>();
         uris.add("start");
-        uris.add("event/" + eventId);
+        uris.add("/events/" + eventId);
         uris.add("end");
-        ResponseEntity<Object> viewStats = statsClient
+
+        List<ViewStats> views = statsClient
                 .getStats(LocalDateTime.of(1000, 01, 01, 00, 0, 0),
                         LocalDateTime.of(3050, 01, 01, 00, 0, 0), uris, true);
-        List<Map<String, Object>> views = (List<Map<String, Object>>) viewStats.getBody();
         if (views.isEmpty()) {
             event.setViews(0L);
         } else {
-            Integer hits = (Integer) views.get(0).get("hits");
-            event.setViews(Long.parseLong(String.valueOf(hits)));
+            Long hits = views.get(0).getHits();
+            event.setViews(hits);
         }
         eventRepository.save(event);
         String ip = request.getRemoteAddr();
         EndpointHitDto endpointHit = new EndpointHitDto(
                 "ewm",
-                "event/" + eventId,
+                "/events/" + eventId,
                 ip,
                 LocalDateTime.now().withNano(0)
         );
@@ -281,18 +283,18 @@ public class EventServiceImpl implements EventService {
 
         List<Event> events = eventRepository.findAllByPublicParam(param);
 
-        List<String> uris = events.stream().map(e -> "event/" + e.getId()).collect(Collectors.toList());
+        List<String> uris = events.stream().map(e -> "events/" + e.getId()).collect(Collectors.toList());
 
-        ResponseEntity<Object> viewStats = statsClient
+        List<ViewStats> views = statsClient
                 .getStatsNoUnique(LocalDateTime.of(1000, 01, 01, 00, 0, 0),
                         LocalDateTime.of(3050, 01, 01, 00, 0, 0), uris);
-        List<ViewStats> views = (List<ViewStats>) viewStats.getBody();
 
         for (Event event : events) {
             String uri = "events/" + event.getId();
             for (ViewStats v : views) {
                 if (v.getUri().equals(uri)) {
                     event.setViews(v.getHits());
+                    eventRepository.save(event);
                     views.remove(v);
                     break;
                 }
@@ -318,6 +320,16 @@ public class EventServiceImpl implements EventService {
             end = events.size();
         }
         events = events.subList(start, end);
+
+        String ip = request.getRemoteAddr();
+        EndpointHitDto endpointHit = new EndpointHitDto(
+                "ewm",
+                "/events",
+                ip,
+                LocalDateTime.now().withNano(0)
+        );
+        hitClient.postEndpoint(endpointHit);
+
         return events.stream().map(EventMapper::toEventShortDto).collect(Collectors.toList());
     }
 

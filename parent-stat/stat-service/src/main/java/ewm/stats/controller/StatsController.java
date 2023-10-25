@@ -2,6 +2,7 @@ package ewm.stats.controller;
 
 import ewm.dto.EndpointHitDto;
 import ewm.dto.ViewStats;
+import ewm.stats.exception.WrongDateException;
 import ewm.stats.model.EndpointHit;
 import ewm.stats.service.StatService;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,9 @@ public class StatsController {
                                     @RequestParam(name = "uris", required = false) List<String> uris,
                                     @RequestParam(name = "unique", defaultValue = "false") boolean unique
     ) {
+        if (end.isBefore(start)) {
+            throw new WrongDateException("End date cannot be before start date.");
+        }
         return statService.getStats(start, end, uris, unique);
     }
 
