@@ -55,7 +55,7 @@ public class CommentServiceImpl implements CommentService {
                 .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
         Comment comment = commentRepository.findById(comId)
                 .orElseThrow(() -> new NotFoundException("Comment with id=" + comId + " was not found"));
-        if (userId != comment.getAuthor().getId()) {
+        if (!userId.equals(comment.getAuthor().getId())) {
             throw new ConflictException("User with id=" + userId + " is not author of comment " + comId + ".");
         }
         comment.setText(newComment.getText());
