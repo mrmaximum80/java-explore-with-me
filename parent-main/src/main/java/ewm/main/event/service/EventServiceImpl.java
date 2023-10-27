@@ -45,6 +45,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
@@ -74,7 +75,6 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    @Transactional
     public List<EventShortDto> getUserEvents(Long userId, Integer from, Integer size) {
         int start;
         int end = from + size;
@@ -117,6 +117,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto userUpdateEvent(Long userId, Long eventId, UpdateEventUserRequest updateEvent) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
@@ -155,6 +156,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto adminUpdateEvent(Long eventId, UpdateEventAdminRequest updateEvent) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
@@ -190,6 +192,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventRequestStatusUpdateResult updateEventRequests(Long userId, Long eventId,
                                                                EventRequestStatusUpdateRequest updateRequest) {
         Event event = eventRepository.findById(eventId)
@@ -248,6 +251,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto getEventByAny(Long eventId, HttpServletRequest request) {
         Event event = eventRepository.findByIdAndState(eventId, State.PUBLISHED)
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
@@ -279,6 +283,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public List<EventShortDto> publicGetEvents(PublicParam param, HttpServletRequest request) {
 
         List<Event> events = eventRepository.findAllByPublicParam(param);

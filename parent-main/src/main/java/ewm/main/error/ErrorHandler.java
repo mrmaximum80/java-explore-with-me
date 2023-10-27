@@ -98,7 +98,7 @@ public class ErrorHandler {
     public ApiError handleConflictException(ConflictException exception) {
         log.info("409 {}", exception.getMessage());
         return new ApiError(exception.getMessage(), "For the requested operation the conditions are not met.",
-                HttpStatus.NOT_FOUND, LocalDateTime.now());
+                HttpStatus.CONFLICT, LocalDateTime.now());
     }
 
     @ExceptionHandler(Exception.class)
